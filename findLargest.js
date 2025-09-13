@@ -7,8 +7,17 @@ function findLargestNumber(arr) {
         throw new Error('Array cannot be empty');
     }
     
-    if (arr.some(item => typeof item !== 'number')) {
-        throw new Error('Array must contain only valid numbers');
+    for (let i = 0; i < arr.length; i++) {
+        const item = arr[i];
+        if (typeof item !== 'number') {
+            throw new Error(`Array element at index ${i} is not a number: ${item}`);
+        }
+        if (Number.isNaN(item)) {
+            throw new Error(`Array element at index ${i} is NaN`);
+        }
+        if (!Number.isFinite(item)) {
+            throw new Error(`Array element at index ${i} is not a finite number: ${item}`);
+        }
     }
     
     return Math.max(...arr);
@@ -85,7 +94,27 @@ function runTests() {
         {
             name: 'Array with non-numbers',
             input: [1, 'hello', 3],
-            expectedError: 'Array must contain only valid numbers'
+            expectedError: 'Array element at index 1 is not a number: hello'
+        },
+        {
+            name: 'Array with NaN',
+            input: [1, NaN, 3],
+            expectedError: 'Array element at index 1 is NaN'
+        },
+        {
+            name: 'Array with Infinity',
+            input: [1, Infinity, 3],
+            expectedError: 'Array element at index 1 is not a finite number: Infinity'
+        },
+        {
+            name: 'Array with -Infinity',
+            input: [1, -Infinity, 3],
+            expectedError: 'Array element at index 1 is not a finite number: -Infinity'
+        },
+        {
+            name: 'Array with multiple invalid elements',
+            input: [1, NaN, 'test', Infinity],
+            expectedError: 'Array element at index 1 is NaN'
         }
     ];
     
