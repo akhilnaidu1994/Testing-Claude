@@ -7,7 +7,7 @@ function findLargestNumber(arr) {
         throw new Error('Array cannot be empty');
     }
     
-    if (arr.some(item => typeof item !== 'number' || isNaN(item))) {
+    if (arr.some(item => typeof item !== 'number')) {
         throw new Error('Array must contain only valid numbers');
     }
     
